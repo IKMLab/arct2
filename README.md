@@ -8,11 +8,10 @@ Abstract:
 
 ## Adversarial Dataset
 
-Provided in the `adv` folder.
+Provided in the `adversarial_dataset` folder.
 
 The script `make_adversarial_dataset.py` provides dictionaries 
-mapping the original to negated claims, and code to recreate them.
-The versions we used in our experiments are in the `adv` folder.
+mapping the original to negated claims.
 
 ## Viewing our Results
 

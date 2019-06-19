@@ -118,7 +118,7 @@ def merge(dataset):
     dfo = data.load(dataset)
     dfa = data.load('%s-adv' % dataset)
     dfm = pd.concat([dfo, dfa])
-    dfm.to_csv('data/arct/%s-merge-full.txt' % dataset, sep='\t', index=False)
+    dfm.to_csv('data/arct/%s.csv' % dataset, sep='\t', index=False)
 
 
 if __name__ == '__main__':
