@@ -1,5 +1,7 @@
 # Probing Neural Network Understanding of Natural Language Arguments
 
+[Link](https://www.aclweb.org/anthology/P19-1459)
+
 Authors: Timothy Niven and Hung-Yu Kao
 
 Abstract:
@@ -9,7 +11,19 @@ Abstract:
 Reference:
 
 ```
-to be added
+@inproceedings{niven-kao-2019-probing,
+    title = "Probing Neural Network Comprehension of Natural Language Arguments",
+    author = "Niven, Timothy  and
+      Kao, Hung-Yu",
+    booktitle = "Proceedings of the 57th Conference of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/P19-1459",
+    pages = "4658--4664",
+    abstract = "We are surprised to find that BERT{'}s peak performance of 77{\%} on the Argument Reasoning Comprehension Task reaches just three points below the average untrained human baseline. However, we show that this result is entirely accounted for by exploitation of spurious statistical cues in the dataset. We analyze the nature of these cues and demonstrate that a range of models all exploit them. This analysis informs the construction of an adversarial dataset on which all models achieve random accuracy. Our adversarial dataset provides a more robust assessment of argument comprehension and should be adopted as the standard in future work.",
+}
 ```
 
 ## Adversarial Dataset
