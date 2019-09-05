@@ -1,5 +1,6 @@
 """Utilities for experiments."""
 import copy
+import gc
 import itertools
 import json
 import os
@@ -327,6 +328,10 @@ def run(args, model_constructor, data_loaders_constructor, grid_space,
         _accs.to_csv(_accs_path, index=False)
         _preds = pd.DataFrame(data=preds, columns=preds.keys())
         _preds.to_csv(_preds_path, index=False)
+
+        # garbage collection - have been getting memory leaks
+        del model, data_loaders
+        gc.collect()
 
     # report results
     print('Experiment results (%s):' % len(accs['train']))
