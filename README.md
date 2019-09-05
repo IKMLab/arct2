@@ -86,7 +86,7 @@ on my Ubuntu computer to make this repository work
 Once your virtual environment is ready, the first thing to do is
 prepare the data by running `prepare.sh`. **I have updated this script
 and this repository since the initial commit so run it again if you
-downloaded it before September 1 2019**.
+downloaded it before September 6 2019**.
 
 Then to reproduce the results of any of the experiments run the
 script
