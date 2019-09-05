@@ -1,5 +1,6 @@
 # Project Specific
 data/
+results/
 scratch.py
 Untitled.ipynb
 accs.json

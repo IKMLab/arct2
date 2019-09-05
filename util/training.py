@@ -191,7 +191,7 @@ class DataLoaders:
 def train(args, model, data_loaders):
     if args.local_rank == -1 or args.no_cuda:
         device = torch.device("cuda" if torch.cuda.is_available()
-                                        and not args.no_cuda else "cpu")
+                              and not args.no_cuda else "cpu")
         n_gpu = torch.cuda.device_count()
     else:
         device = torch.device("cuda", args.local_rank)
