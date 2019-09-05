@@ -1,6 +1,6 @@
 # Project Specific
 data/
-results/
+results/*.csv
 scratch.py
 Untitled.ipynb
 accs.json
