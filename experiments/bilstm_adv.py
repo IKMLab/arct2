@@ -14,12 +14,11 @@ def run():
         hidden_size=512,
         dropout_prob=0.1)
     model_constructor = bilstm.BiLSTM
-    data_loaders = bilstm.DataLoadersAdv()
     grid_space = {
         'learning_rate': [0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03]}
     experiments.run(
         args=args,
         model_constructor=model_constructor,
-        data_loaders=data_loaders,
+        data_loaders_constructor=bilstm.DataLoadersAdv,
         grid_space=grid_space,
         n_experiments=20)

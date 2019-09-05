@@ -1,12 +1,15 @@
 """Utilities for experiments."""
-import os
 import copy
-import json
-import random
-import glovar
 import itertools
+import json
+import os
+import random
+
 import numpy as np
 import pandas as pd
+import torch
+
+import glovar
 from util import training
 
 
@@ -203,14 +206,26 @@ def to_dict(df):
     return data
 
 
-def run(args, model_constructor, data_loaders, grid_space, n_experiments,
-        train_fn=training.train, do_grid=True):
+def run(args, model_constructor, data_loaders_constructor, grid_space,
+        n_experiments, train_fn=training.train, do_grid=True):
     # create the experiment folder if it doesn't already exist
     experiment_path = os.path.join(glovar.RESULTS_DIR, args.experiment_name)
     if not os.path.exists(experiment_path):
         os.mkdir(experiment_path)
 
+    # load the seeds (if they exist)
+    seeds_path = os.path.join(experiment_path, 'seeds.txt')
+    if os.path.exists(seeds_path):
+        with open(seeds_path) as f:
+            seeds = [int(s.strip()) for s in f.readlines()]
+            n_experiments = len(seeds)  # one experiment has less than 20
+    else:
+        seeds = []
+
     if do_grid:
+        # create the data loaders
+        data_loaders = data_loaders_constructor(args)
+
         # conduct grid if best params not already found
         if not os.path.exists(params_path(args.experiment_name)):
             grid_search = GridSearch(
@@ -246,8 +261,7 @@ def run(args, model_constructor, data_loaders, grid_space, n_experiments,
             'seed': [],
             'train': [],
             'dev': [],
-            'test': [],
-            'test_adv': []}
+            'test': []}
     _preds_path = preds_path(args.experiment_name)
     if os.path.exists(_preds_path):
         preds = to_dict(pd.read_csv(_preds_path))
@@ -265,11 +279,25 @@ def run(args, model_constructor, data_loaders, grid_space, n_experiments,
     while len(accs['run_no']) < n_experiments:
         run_no = len(accs['run_no']) + 1
 
-        # new random seed
-        args.seed = random.choice(range(10000))
-        while args.seed in accs['seed']:
+        # get random seed
+        if len(seeds) > 0 and run_no <= len(seeds):  # for reproduction
+            args.seed = seeds[run_no - 1]
+        else:  # get a new one
             args.seed = random.choice(range(10000))
-        
+            while args.seed in accs['seed']:  # make sure it IS new
+                args.seed = random.choice(range(10000))
+
+        # set seed
+        random.seed(args.seed)
+        np.random.seed(args.seed)
+        torch.manual_seed(args.seed)
+        if torch.cuda.device_count() > 0:
+            torch.cuda.manual_seed_all(args.seed)
+
+        # create the data loaders - should have been after set seed in
+        # original experiments, fixed here
+        data_loaders = data_loaders_constructor(args)
+
         # print info
         print('Experiment %s' % run_no)
         args.print()
@@ -283,10 +311,9 @@ def run(args, model_constructor, data_loaders, grid_space, n_experiments,
         accs['train'].append(_accs['train'])
         accs['dev'].append(_accs['dev'])
         accs['test'].append(_accs['test'])
-        accs['test_adv'].append(_accs['test_adv'])
 
         # update preds
-        for dataset in ['train', 'dev', 'test', 'test_adv']:
+        for dataset in ['train', 'dev', 'test']:
             for _pred in _preds[dataset]:
                 preds['run_no'].append(run_no)
                 preds['dataset'].append(dataset)
@@ -303,10 +330,10 @@ def run(args, model_constructor, data_loaders, grid_space, n_experiments,
 
     # report results
     print('Experiment results (%s):' % len(accs['train']))
-    for dataset in ['train', 'dev', 'test', 'test_adv']:
+    for dataset in ['train', 'dev', 'test']:
         print('\t%s' % dataset)
-        dataset_accs = accs[dataset]
-        print('\t\tMean: %s' % np.mean(dataset_accs))
-        print('\t\tMin:  %s' % min(dataset_accs))
-        print('\t\tMax:  %s' % max(dataset_accs))
-        print('\t\tStd:  %s' % np.std(dataset_accs))
+        print('\t\tMean:   %s' % np.mean(accs[dataset]))
+        print('\t\tMedian: %s' % np.median(accs[dataset]))
+        print('\t\tMin:    %s' % min(accs[dataset]))
+        print('\t\tMax:    %s' % max(accs[dataset]))
+        print('\t\tStd:    %s' % np.std(accs[dataset]))

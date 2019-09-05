@@ -181,7 +181,13 @@ class DataLoadersAdv(DataLoaders):
         return self.get_data_loader(examples, args)
 
     def dev(self, args):
-        df = data.load('dev-merge')
+        df = data.load('dev-adv')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def test(self, args):
+        df = data.load('test-adv')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)

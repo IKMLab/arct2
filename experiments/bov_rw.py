@@ -13,13 +13,12 @@ def run():
         tune_embeds=True,
         reduce_op='sum')
     model_constructor = bov.BOV_RW
-    data_loaders = bov.DataLoaders()
     grid_space = {
         'learning_rate': [0.3, 0.2, 0.1, 0.09, 0.08],
         'dropout_prob': [0., 0.1]}
     experiments.run(
         args=args,
         model_constructor=model_constructor,
-        data_loaders=data_loaders,
+        data_loaders_constructor=bov.DataLoaders,
         grid_space=grid_space,
         n_experiments=20)

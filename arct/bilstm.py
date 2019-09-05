@@ -130,7 +130,7 @@ class Collate:
 
 class DataLoaders(training.DataLoaders):
 
-    def __init__(self):
+    def __init__(self, args=None):
         self.vocab = data.vocab()
         self.n_training_points = None
 
@@ -161,12 +161,17 @@ class DataLoaders(training.DataLoaders):
 class DataLoadersAdv(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-w-swap')
+        data_points = data.load('train-adv')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        return self.get_data_loader(data.load('dev-merge'), args)
+        data_points = data.load('dev-adv')
+        return self.get_data_loader(data_points, args)
+
+    def test(self, args):
+        data_points = data.load('test-adv')
+        return self.get_data_loader(data_points, args)
 
 
 #

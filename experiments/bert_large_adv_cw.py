@@ -12,11 +12,10 @@ def run():
         max_seq_length=60,
         learning_rate=2e-5)
     model_constructor = bert.BERT.from_args
-    data_loaders = bert.DataLoadersAdvCW(args)
     experiments.run(
         args=args,
         model_constructor=model_constructor,
-        data_loaders=data_loaders,
+        data_loaders_constructor=bert.DataLoadersAdvCW,
         grid_space=None,
         n_experiments=20,
         do_grid=False)

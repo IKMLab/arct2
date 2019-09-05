@@ -1,16 +1,26 @@
 """View the accuracies for an experiment."""
 import argparse
-import pandas as pd
-from util import experiments
+import os
+
 import numpy as np
+import pandas as pd
+
+import glovar
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('experiment_name', type=str)
+    parser.add_argument('--from_paper', action='store_true', default=False)
     args = parser.parse_args()
 
-    accs_path = experiments.accs_path(args.experiment_name)
+    if args.from_paper:
+        print('Getting accs for results from paper...')
+        accs_path = os.path.join(glovar.PROJ_DIR, 'results_from_paper',
+                                 args.experiment_name, 'accs.csv')
+    else:
+        accs_path = os.path.join(glovar.RESULTS_DIR, args.experiment_name,
+                                 'accs.csv')
     df = pd.read_csv(accs_path)
 
     print('Experiment results (%s):' % len(df))

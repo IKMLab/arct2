@@ -12,7 +12,6 @@ def run():
         train_batch_size=32,
         tune_embeds=True)
     model_constructor = bov.BOV
-    data_loaders = bov.DataLoadersAdv()
     grid_space = {
         'learning_rate': [0.1, 0.09, 0.08],
         'n_train_epochs': [3, 5],
@@ -21,6 +20,6 @@ def run():
     experiments.run(
         args=args,
         model_constructor=model_constructor,
-        data_loaders=data_loaders,
+        data_loaders_constructor=bov.DataLoadersAdv,
         grid_space=grid_space,
         n_experiments=20)

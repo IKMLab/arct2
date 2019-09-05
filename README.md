@@ -35,7 +35,7 @@ mapping the original to negated claims.
 
 ## Viewing our Results
 
-Each experiment has its own folder in the `results` folder.
+Each experiment has its own folder in the `results_from_paper` folder.
 The suffixes indicate the setup
 - `cw` only considers claims and warrants
 - `rw` only considers reasons and warrants
@@ -56,21 +56,73 @@ You can get a summary of the accuracies over various random
 seeds for an experiment by running
 
 ```
-python accs.py experiment_name 
+python accs.py experiment_name --from_paper
 ```
 
 For details of how each experiment is run, you can view the
 files in the `experiments` folder.
 
+The `from_paper` argument will pull results from the `results_from_paper`
+directory. Without this flag it will read the `results` directory, where any
+experiment results you run yourself locally will be recorded.
+
 ## Reproducing our Results
 
-Package requirements are listed in `requirements.txt`.
+Package requirements are listed in `requirements.txt`. We used and tested this
+repository with Python 3.6. **Note that due to a typo in our original
+`requirements.txt` numpy had an error, that is fixed now, so update
+your numpy version if you're in this situation to that in the updated
+requirements file.** To simplify this, here are the commands I issued
+on my Ubuntu computer to make this repository work
+- `conda create --name arct2 python=3.6`
+- `conda activate arct2`
+- `pip install pandas==0.23.4`
+- `pip install nltk==3.4`
+- `pip install tqdm==4.28.1`
+- `conda install -c pytorch pytorch=0.4.1`
+- `pip install numpy==1.15.4`
+- `pip install pytorch-pretrained-bert==0.1.2`
 
-First, prepare the data by running `prepare.sh`.
+Once your virtual environment is ready, the first thing to do is
+prepare the data by running `prepare.sh`. **I have updated this script
+and this repository since the initial commit so run it again if you
+downloaded it before September 1 2019**.
 
-To reproduce the results of any of the experiments run the
+Then to reproduce the results of any of the experiments run the
 script
 
 ```
 python run.py experiment_name
 ```
+
+Note that due to a bug in the random seed control in the original 
+experiments the exact numbers from the paper cannot be reproduced
+(the data loaders were initialized before the seed was set). Having 
+fixed the bug we are reproducing the experiments and reporting the 
+exact values you should see when you run this code. As expected they
+are slightly different, but not qualitatively so. Apparently the 
+order in which the examples are presented does have some effect. BERT
+Base has so far been able to get a lucky run up to 72.5\% on the 
+original dataset. We will complete the tables below in the next two 
+days.
+
+### Table 1
+
+|Model                                  |Dev (Mean)    |Test (Mean)   |Test (Median)|Test (Max)|
+|---------------------------------------|--------------|--------------|-------------|----------|
+|Human (trained)                        |              |0.909 +/- 0.11|             |          |
+|Human (untrained)                      |              |0.798 +/- 0.16|             |          |
+|BERT (Large)                           |0. +/- 0.|0. +/- 0.|0. |0. |
+|GIST (Choi and Lee, 2018)              |0.716 +/- 0.01|0.711 +/- 0.01|             |          |
+|BERT (Base)                            |0.675 +/- 0.03|0.634 +/- 0.07|0.661        |0.725     |
+|World Knowledge (Botschen et al., 2018)|0.674 +/- 0.01|0.568 +/- 0.03|             |0.610     |
+|Bag of Vectors (BoV)                   |0.633 +/- 0.02|0.564 +/- 0.02|0.562        |0.604     |
+|BiLSTM                                 |0.659 +/- 0.01|0.544 +/- 0.02|0.547        |0.583     |
+
+### Table 4
+
+|Model        |Adversarial Test (Mean)|Adversarial Test (Median)|Adversarial Test (Max)|
+|-------------|-----------------------|-------------------------|----------------------|
+|BERT (Large) |0. +/- 0.         |0.                |0.             |
+|BoV          |0.500 +/- 0.00         |0.500                    |0.503                 |
+|BiLSTM       |0.499 +/- 0.00         |0.500                    |0.501                 |

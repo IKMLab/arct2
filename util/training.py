@@ -211,12 +211,6 @@ def train(args, model, data_loaders):
                          "{}, should be >= 1"
                          .format(args.gradient_accumulation_steps))
 
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    if n_gpu > 0:
-        torch.cuda.manual_seed_all(args.seed)
-
     # create dir for experiment checkpoints if it doesn't exist
     experiment_ckpt_dir = os.path.join(glovar.CKPT_DIR, args.experiment_name)
     if not os.path.exists(experiment_ckpt_dir):
@@ -226,7 +220,6 @@ def train(args, model, data_loaders):
     train_loader = data_loaders.train(args)
     dev_loader = data_loaders.dev(args)
     test_loader = data_loaders.test(args)
-    test_adv_loader = data_loaders.test_adv(args)
     num_train_steps = data_loaders.num_train_steps(args)
 
     if args.fp16:
@@ -351,18 +344,15 @@ def train(args, model, data_loaders):
     train_acc, train_preds = acc_and_preds(model, train_loader, device)
     dev_acc, dev_preds = acc_and_preds(model, dev_loader, device)
     test_acc, test_preds = acc_and_preds(model, test_loader, device)
-    test_adv_acc, test_adv_preds = acc_and_preds(model, test_adv_loader, device)
 
     accs = {
         'train': train_acc,
         'dev': dev_acc,
-        'test': test_acc,
-        'test_adv': test_adv_acc}
+        'test': test_acc}
     preds = {
         'train': train_preds,
         'dev': dev_preds,
-        'test': test_preds,
-        'test_adv': test_adv_preds}
+        'test': test_preds}
 
     return accs, preds
 
