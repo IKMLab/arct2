@@ -3,6 +3,7 @@ data/
 results/**/*.csv
 scratch.py
 Untitled.ipynb
+Untitled1.ipynb
 accs.json
 preds.json
 accs.pkl
@@ -10,6 +11,7 @@ preds.pkl
 results/test
 bov2/
 experiments/bov2.py
+tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
