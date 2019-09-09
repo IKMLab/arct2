@@ -103,8 +103,7 @@ exact values you should see when you run this code. As expected they
 are slightly different, but not qualitatively so. Apparently the 
 order in which the examples are presented does have some effect. BERT
 Base has so far been able to get a lucky run up to 72.5\% on the 
-original dataset. We will complete the tables below in the next two 
-days.
+original dataset.
 
 ### Table 1
 
