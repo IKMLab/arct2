@@ -214,22 +214,43 @@ class DataLoadersAdv2(DataLoaders):
         return self.get_data_loader(examples, args)
 
 
-class DataLoadersAdvDevAsTrain(DataLoaders):
+class DataLoadersAdv3(DataLoaders):
 
     def train(self, args):
-        df = data.load('dev-adv')
+        df = data.load('train-adv3')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def dev(self, args):
-        df = data.load('dev-adv')
+        df = data.load('dev-adv3')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def test(self, args):
-        df = data.load('test-adv')
+        df = data.load('test-adv3')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+
+class DataLoadersAdvDevAsTrain(DataLoaders):
+
+    def train(self, args):
+        df = data.load('dev-ray')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def dev(self, args):
+        df = data.load('dev-ray')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def test(self, args):
+        df = data.load('test-ray')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)

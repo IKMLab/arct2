@@ -13,9 +13,9 @@ def run():
         tune_embeds=True)
     model_constructor = bov.BOV
     grid_space = {
-        'learning_rate': [0.1, 0.09, 0.08],
-        'n_train_epochs': [3, 5],
-        'dropout_prob': [0., 0.1],
+        'learning_rate': [0.1, .09, .06, .03, .01, .009, .006, .003, .001],
+        'n_train_epochs': [3, 5, 10, 20],
+        'dropout_prob': [0., .1, .2, .3, .4, .5],
         'train_batch_size': [16, 32, 64]}
     experiments.run(
         args=args,

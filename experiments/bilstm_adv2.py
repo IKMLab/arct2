@@ -15,7 +15,10 @@ def run():
         dropout_prob=0.1)
     model_constructor = bilstm.BiLSTM
     grid_space = {
-        'learning_rate': [0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03]}
+        'learning_rate': [.09, .06, .03, .01, .009, .006, .003, .001],
+        'dropout_prob': [0., .1, .2, .3, .4, .5],
+        'batch_size': [16, 32, 64],
+        'hidden_size': [128, 256, 512]}
     experiments.run(
         args=args,
         model_constructor=model_constructor,

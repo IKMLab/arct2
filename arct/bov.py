@@ -175,6 +175,22 @@ class DataLoadersAdv2(DataLoaders):
         return self.get_data_loader(data_points, args)
 
 
+class DataLoadersAdv3(DataLoaders):
+
+    def train(self, args):
+        data_points = data.load('train-adv3')
+        self.n_training_points = len(data_points)
+        return self.get_data_loader(data_points, args)
+
+    def dev(self, args):
+        data_points = data.load('dev-adv3')
+        return self.get_data_loader(data_points, args)
+
+    def test(self, args):
+        data_points = data.load('test-adv3')
+        return self.get_data_loader(data_points, args)
+
+
 class DataLoadersAdvTest(DataLoaders):
 
     def train(self, args):
