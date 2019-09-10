@@ -61,6 +61,15 @@ fi
 if [ ! -f data/arct/test-adv-full.txt ]; then
     cp adversarial_dataset/test.csv data/arct/test-adv-full.txt
 fi
+if [ ! -f data/arct/train-adv2-full.txt ]; then
+    cp adversarial_dataset/train-adv2-full.txt data/arct/train-adv2-full.txt
+fi
+if [ ! -f data/arct/dev-adv2-full.txt ]; then
+    cp adversarial_dataset/dev-adv2-full.txt data/arct/dev-adv2-full.txt
+fi
+if [ ! -f data/arct/test-adv2-full.txt ]; then
+    cp adversarial_dataset/test-adv2-full.txt data/arct/test-adv2-full.txt
+fi
 
 # download GloVe
 if [ ! -f data/arct/glove.npy ]; then
