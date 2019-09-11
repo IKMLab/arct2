@@ -214,6 +214,28 @@ class DataLoadersAdv2(DataLoaders):
         return self.get_data_loader(examples, args)
 
 
+class DataLoadersAdv2CW(DataLoadersAdv2):
+
+    def create_examples(self, df):
+        examples = []
+        for _, line in df.iterrows():
+            guid = line['#id']
+            text_a = line['claim']
+            text_b_0 = line['warrant0']
+            text_b_1 = line['warrant1']
+            label = int(line['correctLabelW0orW1'])
+            examples.append([
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_0,
+                                  label=label),
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_1,
+                                  label=label)])
+        return examples
+
+
 class DataLoadersAdv3(DataLoaders):
 
     def train(self, args):
