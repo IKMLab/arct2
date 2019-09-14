@@ -28,7 +28,7 @@ def rev_vocab():
 
 
 def load(dataset):
-    path = os.path.join(glovar.ARCT_DIR, '%s-full.txt' % dataset)
+    path = os.path.join(glovar.ARCT_DIR, '%s.csv' % dataset)
     return pd.read_csv(path, delimiter='\t')
 
 

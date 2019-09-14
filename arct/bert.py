@@ -77,25 +77,19 @@ class DataLoaders(training.DataLoaders):
         self.n_training_points = None
 
     def train(self, args):
-        df = data.load('train')
+        df = data.load('train-original')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def dev(self, args):
-        df = data.load('dev')
+        df = data.load('dev-original')
         self.n_train_examples = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def test(self, args):
-        df = data.load('test')
-        self.n_train_examples = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def test_adv(self, args):
-        df = data.load('test-adv')
+        df = data.load('test-original')
         self.n_train_examples = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
@@ -172,49 +166,78 @@ class DataLoaders(training.DataLoaders):
         return [0, 1]
 
 
-class DataLoadersAdv(DataLoaders):
+class DataLoadersAdvOriginal(DataLoaders):
+    """Note: due to accident, the original experiments in the paper were
+    performed on the `swapped` train and `negated` dev and test sets.
+
+    It turns out the results are the same if we use all swapped.
+
+    But the negated adversarial dataset introduces new spurious statistical
+    cues over the claims and warrants - see {model_name}_adv_neg_cw results
+    which demonstrate this fact."""
 
     def train(self, args):
-        df = data.load('train-adv')
+        df = data.load('train-adv-swapped')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def dev(self, args):
-        df = data.load('dev-adv')
+        df = data.load('dev-adv-negated')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def test(self, args):
-        df = data.load('test-adv')
+        df = data.load('test-negated')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
 
-class DataLoadersAdv2(DataLoaders):
+class DataLoadersAdvSwapped(DataLoaders):
 
     def train(self, args):
-        df = data.load('train-adv2')
+        df = data.load('train-adv-swapped')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def dev(self, args):
-        df = data.load('dev-adv2')
+        df = data.load('dev-adv-swapped')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
     def test(self, args):
-        df = data.load('test-adv2')
+        df = data.load('test-adv-swapped')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
 
 
-class DataLoadersAdv2CW(DataLoadersAdv2):
+class DataLoadersAdvNegated(DataLoaders):
+
+    def train(self, args):
+        df = data.load('train-adv-negated')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def dev(self, args):
+        df = data.load('dev-adv-negated')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def test(self, args):
+        df = data.load('test-adv-negated')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+
+class DataLoadersAdvNegatedCW(DataLoadersAdvNegated):
 
     def create_examples(self, df):
         examples = []
@@ -236,91 +259,7 @@ class DataLoadersAdv2CW(DataLoadersAdv2):
         return examples
 
 
-class DataLoadersAdv3(DataLoaders):
-
-    def train(self, args):
-        df = data.load('train-adv3')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def dev(self, args):
-        df = data.load('dev-adv3')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def test(self, args):
-        df = data.load('test-adv3')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-
-class DataLoadersAdvDevAsTrain(DataLoaders):
-
-    def train(self, args):
-        df = data.load('dev-ray')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def dev(self, args):
-        df = data.load('dev-ray')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def test(self, args):
-        df = data.load('test-ray')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-
-class DataLoadersAdvTest(DataLoaders):
-
-    def train(self, args):
-        df = data.load('train')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def dev(self, args):
-        df = data.load('dev')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def test(self, args):
-        df = data.load('test-adv')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-
-class DataLoadersAdvDevTest(DataLoaders):
-
-    def train(self, args):
-        df = data.load('train')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def dev(self, args):
-        df = data.load('dev-adv')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-    def test(self, args):
-        df = data.load('test-adv')
-        self.n_training_points = len(df)
-        examples = self.create_examples(df)
-        return self.get_data_loader(examples, args)
-
-
-class DataLoadersAdvW(DataLoadersAdv):
+class DataLoadersAdvOriginalW(DataLoadersAdvOriginal):
 
     def create_examples(self, df):
         examples = []
@@ -339,7 +278,7 @@ class DataLoadersAdvW(DataLoadersAdv):
         return examples
 
 
-class DataLoadersAdvRW(DataLoadersAdv):
+class DataLoadersAdvOriginalRW(DataLoadersAdvOriginal):
 
     def create_examples(self, df):
         examples = []
@@ -361,7 +300,7 @@ class DataLoadersAdvRW(DataLoadersAdv):
         return examples
 
 
-class DataLoadersAdvCW(DataLoadersAdv):
+class DataLoadersAdvOriginalCW(DataLoadersAdvOriginal):
 
     def create_examples(self, df):
         examples = []

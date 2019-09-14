@@ -135,18 +135,15 @@ class DataLoaders(training.DataLoaders):
         self.n_training_points = None
 
     def train(self, args):
-        data_points = data.load('train')
+        data_points = data.load('train-original')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        return self.get_data_loader(data.load('dev'), args)
+        return self.get_data_loader(data.load('dev-original'), args)
 
     def test(self, args):
-        return self.get_data_loader(data.load('test'), args)
-
-    def test_adv(self, args):
-        return self.get_data_loader(data.load('test-adv'), args)
+        return self.get_data_loader(data.load('test-original'), args)
 
     def get_data_loader(self, data_points, args):
         dataset = Dataset(data_points)
@@ -158,83 +155,51 @@ class DataLoaders(training.DataLoaders):
             collate_fn=Collate())
 
 
-class DataLoadersAdv(DataLoaders):
+class DataLoadersAdvOriginal(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv')
+        data_points = data.load('train-adv-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev-adv')
+        data_points = data.load('dev-adv-negated')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv')
+        data_points = data.load('test-adv-negated')
         return self.get_data_loader(data_points, args)
 
 
-class DataLoadersAdv2(DataLoaders):
+class DataLoadersAdvSwapped(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv2')
+        data_points = data.load('train-adv-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev-adv2')
+        data_points = data.load('dev-adv-swapped')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv2')
+        data_points = data.load('test-adv-swapped')
         return self.get_data_loader(data_points, args)
 
 
-class DataLoadersAdv3(DataLoaders):
+class DataLoadersAdvNegated(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv3')
+        data_points = data.load('train-adv-negated')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev-adv3')
+        data_points = data.load('dev-adv-negated')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv3')
-        return self.get_data_loader(data_points, args)
-
-
-class DataLoadersAdvTest(DataLoaders):
-
-    def train(self, args):
-        data_points = data.load('train')
-        self.n_training_points = len(data_points)
-        return self.get_data_loader(data_points, args)
-
-    def dev(self, args):
-        data_points = data.load('dev')
-        return self.get_data_loader(data_points, args)
-
-    def test(self, args):
-        data_points = data.load('test-adv')
-        return self.get_data_loader(data_points, args)
-
-
-class DataLoadersAdvDevTest(DataLoaders):
-
-    def train(self, args):
-        data_points = data.load('train')
-        self.n_training_points = len(data_points)
-        return self.get_data_loader(data_points, args)
-
-    def dev(self, args):
-        data_points = data.load('dev-adv')
-        return self.get_data_loader(data_points, args)
-
-    def test(self, args):
-        data_points = data.load('test-adv')
+        data_points = data.load('test-adv-negated')
         return self.get_data_loader(data_points, args)
 
 
@@ -321,7 +286,7 @@ class BiLSTM(nn.Module):
         return loss, logits
 
 
-class BiLSTM_WW(nn.Module):
+class BiLSTM_W(nn.Module):
 
     def __init__(self, args):
         super().__init__()

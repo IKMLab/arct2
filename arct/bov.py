@@ -122,15 +122,15 @@ class DataLoaders(training.DataLoaders):
         self.n_training_points = None
 
     def train(self, args):
-        data_points = data.load('train')
+        data_points = data.load('train-original')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        return self.get_data_loader(data.load('dev'), args)
+        return self.get_data_loader(data.load('dev-original'), args)
 
     def test(self, args):
-        return self.get_data_loader(data.load('test'), args)
+        return self.get_data_loader(data.load('test-original'), args)
 
     @staticmethod
     def get_data_loader(data_points, args):
@@ -143,83 +143,67 @@ class DataLoaders(training.DataLoaders):
             collate_fn=Collate())
 
 
-class DataLoadersAdv(DataLoaders):
+class DataLoadersSwapTrain(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv')
+        data_points = data.load('train-adv-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev-adv')
+        data_points = data.load('dev-original')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv')
+        data_points = data.load('test-original')
         return self.get_data_loader(data_points, args)
 
 
-class DataLoadersAdv2(DataLoaders):
+class DataLoadersAdvOriginal(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv2')
+        data_points = data.load('train-adv-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev-adv2')
+        data_points = data.load('dev-adv-negated')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv2')
+        data_points = data.load('test-adv-negated')
         return self.get_data_loader(data_points, args)
 
 
-class DataLoadersAdv3(DataLoaders):
+class DataLoadersAdvSwapped(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv3')
+        data_points = data.load('train-adv-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev-adv3')
+        data_points = data.load('dev-adv-swapped')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv3')
+        data_points = data.load('test-adv-swapped')
         return self.get_data_loader(data_points, args)
 
 
-class DataLoadersAdvTest(DataLoaders):
+class DataLoadersAdvNegated(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train')
+        data_points = data.load('train-adv-negated')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
     def dev(self, args):
-        data_points = data.load('dev')
+        data_points = data.load('dev-adv-negated')
         return self.get_data_loader(data_points, args)
 
     def test(self, args):
-        data_points = data.load('test-adv')
-        return self.get_data_loader(data_points, args)
-
-
-class DataLoadersAdvDevTest(DataLoaders):
-
-    def train(self, args):
-        data_points = data.load('train')
-        self.n_training_points = len(data_points)
-        return self.get_data_loader(data_points, args)
-
-    def dev(self, args):
-        data_points = data.load('dev-adv')
-        return self.get_data_loader(data_points, args)
-
-    def test(self, args):
-        data_points = data.load('test-adv')
+        data_points = data.load('test-adv-negated')
         return self.get_data_loader(data_points, args)
 
 
@@ -372,7 +356,46 @@ class BOV_CW(nn.Module):
         return loss, logits
 
 
-class BOV_WW(nn.Module):
+class BOV_CR(nn.Module):
+
+    def __init__(self, args):
+        super().__init__()
+        embeds = torch.from_numpy(data.glove())
+        self.embeddings = nn.Embedding(embeds.shape[0], embeds.shape[1])
+        self.embeddings.weight = nn.Parameter(
+            embeds, requires_grad=args.tune_embeds)
+        self.dropout = nn.Dropout(args.dropout_prob)
+        self.classify = nn.Linear(600, 2)
+        self.loss = nn.CrossEntropyLoss()
+
+    def forward(self, batch):
+        # batch.{sent} is vectors of shape batch x max_len x dim (300)
+        # batch tensors should be put on device in training script prior to here
+
+        # embedding lookup
+        claims = self.embeddings(batch.claims)
+        reasons = self.embeddings(batch.reasons)
+
+        # reduction
+        claims = torch.max(claims, dim=1)[0]
+        reasons = torch.max(reasons, dim=1)[0]
+
+        # gather for classification
+        input = torch.cat([claims, reasons], dim=1)
+
+        # regularization
+        input = self.dropout(input)
+
+        # classification
+        logits = self.classify(input)
+
+        # calculate loss
+        loss = self.loss(logits, batch.label_ids)
+
+        return loss, logits
+
+
+class BOV_W(nn.Module):
 
     def __init__(self, args):
         super().__init__()

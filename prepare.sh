@@ -23,15 +23,17 @@ if [ ! -d data/glove ]; then
 fi
 
 # download the data
-if [ ! -f data/arct/train-full.txt ]; then
+if [ ! -f data/arct/train-original.csv ]; then
     echo "Downloading train data..."
     wget https://github.com/habernal/semeval2018-task12/raw/master/data/train/train-full.txt -P data/arct/
+    mv data/arct/train-full.txt data/arct/train-original.csv
 fi
-if [ ! -f data/arct/dev-full.txt ]; then
+if [ ! -f data/arct/dev-original.csv ]; then
     echo "Downloading dev data..."
     wget https://github.com/habernal/semeval2018-task12/raw/master/data/dev/dev-full.txt -P data/arct/
+    mv data/arct/dev-full.txt data/arct/dev-original.csv
 fi
-if [ ! -f data/arct/test-full.txt ]; then
+if [ ! -f data/arct/test-original.csv ]; then
     # download the test set
     echo "Downloading test data..."
     if [ ! -f data/arct/test-only-data.txt ]; then
@@ -52,23 +54,23 @@ if [ ! -f data/arct/test-full.txt ]; then
 fi
 
 # copy the adversarial dataset into data/arct
-if [ ! -f data/arct/train-adv-full.txt ]; then
-    cp adversarial_dataset/train.csv data/arct/train-adv-full.txt
+if [ ! -f data/arct/train-adv-swapped.csv ]; then
+    cp adversarial_dataset/train-adv-swapped.csv data/arct/train-adv-swapped.csv
 fi
-if [ ! -f data/arct/dev-adv-full.txt ]; then
-    cp adversarial_dataset/dev.csv data/arct/dev-adv-full.txt
+if [ ! -f data/arct/train-adv-negated.csv ]; then
+    cp adversarial_dataset/train-adv-negated.csv data/arct/train-adv-negated.csv
 fi
-if [ ! -f data/arct/test-adv-full.txt ]; then
-    cp adversarial_dataset/test.csv data/arct/test-adv-full.txt
+if [ ! -f data/arct/dev-adv-swapped.csv ]; then
+    cp adversarial_dataset/dev-adv-swapped.csv data/arct/dev-adv-swapped.csv
 fi
-if [ ! -f data/arct/train-adv2-full.txt ]; then
-    cp adversarial_dataset/train-adv2-full.txt data/arct/train-adv2-full.txt
+if [ ! -f data/arct/dev-adv-negated.csv ]; then
+    cp adversarial_dataset/dev-adv-negated.csv data/arct/dev-adv-negated.csv
 fi
-if [ ! -f data/arct/dev-adv2-full.txt ]; then
-    cp adversarial_dataset/dev-adv2-full.txt data/arct/dev-adv2-full.txt
+if [ ! -f data/arct/test-adv-swapped.csv ]; then
+    cp adversarial_dataset/test-adv-swapped.csv data/arct/test-adv-swapped.csv
 fi
-if [ ! -f data/arct/test-adv2-full.txt ]; then
-    cp adversarial_dataset/test-adv2-full.txt data/arct/test-adv2-full.txt
+if [ ! -f data/arct/test-adv-negated.csv ]; then
+    cp adversarial_dataset/test-adv-negated.csv data/arct/test-adv-negated.csv
 fi
 
 # download GloVe

@@ -20,6 +20,6 @@ def run():
     experiments.run(
         args=args,
         model_constructor=model_constructor,
-        data_loaders_constructor=bov.DataLoadersAdvTest,
+        data_loaders_constructor=bov.DataLoaders,
         grid_space=grid_space,
         n_experiments=20)

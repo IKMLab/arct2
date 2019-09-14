@@ -36,11 +36,14 @@ mapping the original to negated claims.
 ## Viewing our Results
 
 Each experiment has its own folder in the `results_from_paper` folder.
-The suffixes indicate the setup
+The suffixes (and combinations thereof) indicate the setup
 - `cw` only considers claims and warrants
 - `rw` only considers reasons and warrants
 - `w` only considers warrants
-- `adv` uses the adversarial dataset
+- `adv_orig` uses the adversarial dataset in the original setup from the
+  paper - i.e. swapped train set and negated dev and test sets
+- `adv_swap` uses the swapped adversarial dataset
+- `adv_neg` uses the negated adversarial dataset
 
 Within each experiment's folder you will find
 - `accs.csv`: contains accuracies for train, dev, and test over

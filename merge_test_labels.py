@@ -8,7 +8,7 @@ if __name__ == '__main__':
     # make sure the data is there
     test_only_data_path = os.path.join(glovar.ARCT_DIR, 'test-only-data.txt')
     truth_data_path = os.path.join(glovar.ARCT_DIR, 'truth.txt')
-    test_data_path = os.path.join(glovar.ARCT_DIR, 'test-full.txt')
+    test_data_path = os.path.join(glovar.ARCT_DIR, 'test-original.csv')
     if not os.path.exists(test_only_data_path):
         raise ValueError('Missing text-only-data.txt in data dir. '
                          'Run prepare.sh.')
