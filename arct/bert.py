@@ -259,6 +259,47 @@ class DataLoadersAdvNegatedCW(DataLoadersAdvNegated):
         return examples
 
 
+class DataLoadersAdvNegatedRW(DataLoadersAdvNegated):
+
+    def create_examples(self, df):
+        examples = []
+        for _, line in df.iterrows():
+            guid = line['#id']
+            text_a = line['reason']
+            text_b_0 = line['warrant0']
+            text_b_1 = line['warrant1']
+            label = int(line['correctLabelW0orW1'])
+            examples.append([
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_0,
+                                  label=label),
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_1,
+                                  label=label)])
+        return examples
+
+
+class DataLoadersAdvNegatedW(DataLoadersAdvNegated):
+
+    def create_examples(self, df):
+        examples = []
+        for _, line in df.iterrows():
+            guid = line['#id']
+            text_0 = line['warrant0']
+            text_1 = line['warrant1']
+            label = int(line['correctLabelW0orW1'])
+            examples.append([
+                bert.SingleInputExample(guid=guid,
+                                        text_a=text_0,
+                                        label=label),
+                bert.SingleInputExample(guid=guid,
+                                        text_a=text_1,
+                                        label=label)])
+        return examples
+
+
 class DataLoadersAdvOriginalW(DataLoadersAdvOriginal):
 
     def create_examples(self, df):
