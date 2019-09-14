@@ -216,6 +216,69 @@ class DataLoadersAdvSwapped(DataLoaders):
         return self.get_data_loader(examples, args)
 
 
+class DataLoadersAdvSwappedCW(DataLoadersAdvSwapped):
+
+    def create_examples(self, df):
+        examples = []
+        for _, line in df.iterrows():
+            guid = line['#id']
+            text_a = line['claim']
+            text_b_0 = line['warrant0']
+            text_b_1 = line['warrant1']
+            label = int(line['correctLabelW0orW1'])
+            examples.append([
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_0,
+                                  label=label),
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_1,
+                                  label=label)])
+        return examples
+
+
+class DataLoadersAdvSwappedRW(DataLoadersAdvSwapped):
+
+    def create_examples(self, df):
+        examples = []
+        for _, line in df.iterrows():
+            guid = line['#id']
+            text_a = line['reason']
+            text_b_0 = line['warrant0']
+            text_b_1 = line['warrant1']
+            label = int(line['correctLabelW0orW1'])
+            examples.append([
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_0,
+                                  label=label),
+                bert.InputExample(guid=guid,
+                                  text_a=text_a,
+                                  text_b=text_b_1,
+                                  label=label)])
+        return examples
+
+
+class DataLoadersAdvSwappedW(DataLoadersAdvSwapped):
+
+    def create_examples(self, df):
+        examples = []
+        for _, line in df.iterrows():
+            guid = line['#id']
+            text_0 = line['warrant0']
+            text_1 = line['warrant1']
+            label = int(line['correctLabelW0orW1'])
+            examples.append([
+                bert.SingleInputExample(guid=guid,
+                                        text_a=text_0,
+                                        label=label),
+                bert.SingleInputExample(guid=guid,
+                                        text_a=text_1,
+                                        label=label)])
+        return examples
+
+
 class DataLoadersAdvNegated(DataLoaders):
 
     def train(self, args):
