@@ -11,11 +11,11 @@ def run():
         num_train_epochs=20,
         max_seq_length=80,
         learning_rate=2e-5)
-    model_constructor = bert.BERT.from_args
+    grid_space = {
+        'learning_rate': [6e-5, 3e-5, 1e-5, 9e-6, 6e-6, 3e-6, 1e-6, 9e-7, 6e-7]}
     experiments.run(
         args=args,
-        model_constructor=model_constructor,
-        data_loaders_constructor=bert.DataLoadersAdv2,
-        grid_space=None,
-        n_experiments=20,
-        do_grid=False)
+        model_constructor=bert.BERT.from_args,
+        data_loaders_constructor=bert.DataLoadersAdvNegated,
+        grid_space=grid_space,
+        n_experiments=20)

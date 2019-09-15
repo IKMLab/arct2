@@ -166,15 +166,7 @@ class DataLoaders(training.DataLoaders):
         return [0, 1]
 
 
-class DataLoadersAdvOriginal(DataLoaders):
-    """Note: due to accident, the original experiments in the paper were
-    performed on the `swapped` train and `negated` dev and test sets.
-
-    It turns out the results are the same if we use all swapped.
-
-    But the negated adversarial dataset introduces new spurious statistical
-    cues over the claims and warrants - see {model_name}_adv_neg_cw results
-    which demonstrate this fact."""
+class DataLoadersAdvCrossed(DataLoaders):
 
     def train(self, args):
         df = data.load('train-adv-swapped')
