@@ -40,10 +40,10 @@ The suffixes (and combinations thereof) indicate the setup
 - `cw` only considers claims and warrants
 - `rw` only considers reasons and warrants
 - `w` only considers warrants
-- `adv_orig` uses the adversarial dataset in the original setup from the
-  paper - i.e. swapped train set and negated dev and test sets
+- `adv_orig` uses the original hyperparameters and the negated dataset
 - `adv_swap` uses the swapped adversarial dataset
-- `adv_neg` uses the negated adversarial dataset
+- `adv_neg` uses the negated adversarial dataset with larger hyper-
+  parameter search space to find the new claim-warrant cues
 
 Within each experiment's folder you will find
 - `accs.csv`: contains accuracies for train, dev, and test over

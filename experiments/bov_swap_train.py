@@ -16,10 +16,10 @@ def run():
         'learning_rate': [0.1, 0.09, 0.08],
         'n_train_epochs': [3, 5],
         'dropout_prob': [0., 0.1],
-        'train_batch_size': [16, 32, 64]}
+        'train_batch_size': [16, 32]}
     experiments.run(
         args=args,
         model_constructor=model_constructor,
-        data_loaders_constructor=bov.DataLoaders,
+        data_loaders_constructor=bov.DataLoadersSwappedTrain,
         grid_space=grid_space,
         n_experiments=20)

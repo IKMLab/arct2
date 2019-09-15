@@ -155,6 +155,22 @@ class DataLoaders(training.DataLoaders):
             collate_fn=Collate())
 
 
+class DataLoadersSwappedTrain(DataLoaders):
+
+    def train(self, args):
+        data_points = data.load('train-adv-swapped')
+        self.n_training_points = len(data_points)
+        return self.get_data_loader(data_points, args)
+
+    def dev(self, args):
+        data_points = data.load('dev-original')
+        return self.get_data_loader(data_points, args)
+
+    def test(self, args):
+        data_points = data.load('test-original')
+        return self.get_data_loader(data_points, args)
+
+
 class DataLoadersAdvOriginal(DataLoaders):
 
     def train(self, args):

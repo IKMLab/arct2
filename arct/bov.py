@@ -143,7 +143,7 @@ class DataLoaders(training.DataLoaders):
             collate_fn=Collate())
 
 
-class DataLoadersSwapTrain(DataLoaders):
+class DataLoadersSwappedTrain(DataLoaders):
 
     def train(self, args):
         data_points = data.load('train-adv-swapped')
