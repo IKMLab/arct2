@@ -50,7 +50,8 @@ versions:
   holding over claims and warrants that provide a common solution to
   the training and testing sets, and therefore achieves above random
   performance. Hence the original dataset provides a more robust
-  evaluation. This dataset is comprised of
+  evaluation. We analyze this dataset more thoroughly in a forthcoming
+  paper. It dataset is comprised of
   * `train-adv-negated.csv`
   * `dev-adv-negated.csv`
   * `test-adv-negated.csv`
@@ -111,6 +112,8 @@ commands I issued on my Ubuntu computer to make this repository work:
 Run `prepare.sh`. If you download a new version of this repository,
 you should run this again.
 
+### Running Experiments
+
 Then to reproduce the results of any of the experiments run the
 script
 
@@ -128,7 +131,9 @@ order in which the examples are presented does have some effect. BERT
 Base has so far been able to get a lucky run up to 72.5\% on the 
 original dataset.
 
-### Table 1
+### Results
+
+#### Table 1
 
 |Model                                  |Dev (Mean)    |Test (Mean)   |Test (Median)|Test (Max)|
 |---------------------------------------|--------------|--------------|-------------|----------|
@@ -141,7 +146,7 @@ original dataset.
 |Bag of Vectors (BoV)                   |0.633 +/- 0.02|0.564 +/- 0.02|0.562        |0.604     |
 |BiLSTM                                 |0.659 +/- 0.01|0.544 +/- 0.02|0.547        |0.583     |
 
-### Table 4
+#### Table 4
 
 These experiments are named following the convention 
 `{experiment_name_adv_orig}`.
