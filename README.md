@@ -26,12 +26,34 @@ Reference:
 }
 ```
 
+## Errata
+
+Due to an errata in the original paper, we have updated the arXiv
+version [here](https://arxiv.org/abs/1907.07355). The errata was that
+our adversarial experiments used the original (not claim-negated) data
+for training. This is important for breaking the validity of spurious 
+cues over the claims and warrants. Details of the problem of cues over 
+claims and warrants will be provided in a forthcoming paper. 
+
 ## Adversarial Dataset
 
-Provided in the `adversarial_dataset` folder.
-
-The script `make_adversarial_dataset.py` provides dictionaries 
-mapping the original to negated claims.
+Provided in the `adversarial_dataset` folder. Note there are two 
+versions:
+- `original`: training set is the original data, augmented with warrant
+  swaps; validation and test are augmented with negated claims, as per
+  the paper. So you would use
+  * `train-swapped.csv`
+  * `dev-adv-negated.csv`
+  * `test-adv-negated.csv`
+- `negated`: the training, validation, and test sets are all augmented
+  with negated claims. This dataset contains spurious statistical cues
+  holding over claims and warrants that provide a common solution to
+  the training and testing sets, and therefore achieves above random
+  performance. Hence the original dataset provides a more robust
+  evaluation. This dataset is comprised of
+  * `train-adv-negated.csv`
+  * `dev-adv-negated.csv`
+  * `test-adv-negated.csv`
 
 ## Viewing our Results
 
@@ -40,10 +62,8 @@ The suffixes (and combinations thereof) indicate the setup
 - `cw` only considers claims and warrants
 - `rw` only considers reasons and warrants
 - `w` only considers warrants
-- `adv_orig` uses the original hyperparameters and the negated dataset
-- `adv_swap` uses the swapped adversarial dataset
-- `adv_neg` uses the negated adversarial dataset with larger hyper-
-  parameter search space to find the new claim-warrant cues
+- `adv` uses the adversarial dev and test dataset, and swap augmented
+  train dataset
 
 Within each experiment's folder you will find
 - `accs.csv`: contains accuracies for train, dev, and test over
@@ -65,18 +85,18 @@ python accs.py experiment_name --from_paper
 For details of how each experiment is run, you can view the
 files in the `experiments` folder.
 
-The `from_paper` argument will pull results from the `results_from_paper`
-directory. Without this flag it will read the `results` directory, where any
-experiment results you run yourself locally will be recorded.
+The `from_paper` argument will pull results from the 
+`results_from_paper` directory. Without this flag it will read the 
+`results` directory, where any experiment results you run yourself 
+locally will be recorded.
 
 ## Reproducing our Results
 
-Package requirements are listed in `requirements.txt`. We used and tested this
-repository with Python 3.6. **Note that due to a typo in our original
-`requirements.txt` numpy had an error, that is fixed now, so update
-your numpy version if you're in this situation to that in the updated
-requirements file.** To simplify this, here are the commands I issued
-on my Ubuntu computer to make this repository work
+### Virtual Environment
+
+Package requirements are listed in `requirements.txt`. We used and 
+tested this repository with Python 3.6. To simplify this, here are the  
+commands I issued on my Ubuntu computer to make this repository work:
 - `conda create --name arct2 python=3.6`
 - `conda activate arct2`
 - `pip install pandas==0.23.4`
@@ -86,10 +106,10 @@ on my Ubuntu computer to make this repository work
 - `pip install numpy==1.15.4`
 - `pip install pytorch-pretrained-bert==0.1.2`
 
-Once your virtual environment is ready, the first thing to do is
-prepare the data by running `prepare.sh`. **I have updated this script
-and this repository since the initial commit so run it again if you
-downloaded it before September 6 2019**.
+### Download and Prepare Data
+
+Run `prepare.sh`. If you download a new version of this repository,
+you should run this again.
 
 Then to reproduce the results of any of the experiments run the
 script
@@ -122,6 +142,9 @@ original dataset.
 |BiLSTM                                 |0.659 +/- 0.01|0.544 +/- 0.02|0.547        |0.583     |
 
 ### Table 4
+
+These experiments are named following the convention 
+`{experiment_name_adv_orig}`.
 
 |Model        |Adversarial Test (Mean)|Adversarial Test (Median)|Adversarial Test (Max)|
 |-------------|-----------------------|-------------------------|----------------------|

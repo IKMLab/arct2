@@ -162,7 +162,7 @@ class DataLoadersSwappedTrain(DataLoaders):
 class DataLoadersAdvOriginal(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv-swapped')
+        data_points = data.load('train-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 
@@ -429,6 +429,74 @@ class BOV_W(nn.Module):
 
         # cat logits for softmax
         logits = torch.cat([logits0, logits1], dim=1)
+
+        # calculate loss
+        loss = self.loss(logits, batch.label_ids)
+
+        return loss, logits
+
+
+class BOV_C(nn.Module):
+
+    def __init__(self, args):
+        super().__init__()
+        embeds = torch.from_numpy(data.glove())
+        self.embeddings = nn.Embedding(embeds.shape[0], embeds.shape[1])
+        self.embeddings.weight = nn.Parameter(
+            embeds, requires_grad=args.tune_embeds)
+        self.dropout = nn.Dropout(args.dropout_prob)
+        self.classify = nn.Linear(300, 2)
+        self.loss = nn.CrossEntropyLoss()
+
+    def forward(self, batch):
+        # batch.{sent} is vectors of shape batch x max_len x dim (300)
+        # batch tensors should be put on device in training script prior to here
+
+        # embedding lookup
+        claims = self.embeddings(batch.claims)
+
+        # reduction
+        claims = torch.max(claims, dim=1)[0]
+
+        # regularization
+        claims = self.dropout(claims)
+
+        # classification
+        logits = self.classify(claims)
+
+        # calculate loss
+        loss = self.loss(logits, batch.label_ids)
+
+        return loss, logits
+
+
+class BOV_R(nn.Module):
+
+    def __init__(self, args):
+        super().__init__()
+        embeds = torch.from_numpy(data.glove())
+        self.embeddings = nn.Embedding(embeds.shape[0], embeds.shape[1])
+        self.embeddings.weight = nn.Parameter(
+            embeds, requires_grad=args.tune_embeds)
+        self.dropout = nn.Dropout(args.dropout_prob)
+        self.classify = nn.Linear(300, 2)
+        self.loss = nn.CrossEntropyLoss()
+
+    def forward(self, batch):
+        # batch.{sent} is vectors of shape batch x max_len x dim (300)
+        # batch tensors should be put on device in training script prior to here
+
+        # embedding lookup
+        reasons = self.embeddings(batch.reasons)
+
+        # reduction
+        reasons = torch.max(reasons, dim=1)[0]
+
+        # regularization
+        reasons = self.dropout(reasons)
+
+        # classification
+        logits = self.classify(reasons)
 
         # calculate loss
         loss = self.loss(logits, batch.label_ids)

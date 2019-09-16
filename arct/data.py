@@ -57,6 +57,11 @@ def make_adversarial(dataset):
     return new_dataset
 
 
+def preds(exp_name):
+    preds_path = os.path.join(glovar.RESULTS_DIR, exp_name, 'preds.csv')
+    return pd.read_csv(preds_path)
+
+
 def view(x):
     print('-' * 8)
     print(f'Claim:    {x.claim}')

@@ -54,20 +54,14 @@ if [ ! -f data/arct/test-original.csv ]; then
 fi
 
 # copy the adversarial dataset into data/arct
-if [ ! -f data/arct/train-adv-swapped.csv ]; then
-    cp adversarial_dataset/train-adv-swapped.csv data/arct/train-adv-swapped.csv
+if [ ! -f data/arct/train-swapped.csv ]; then
+    cp adversarial_dataset/train-swapped.csv data/arct/train-swapped.csv
 fi
 if [ ! -f data/arct/train-adv-negated.csv ]; then
     cp adversarial_dataset/train-adv-negated.csv data/arct/train-adv-negated.csv
 fi
-if [ ! -f data/arct/dev-adv-swapped.csv ]; then
-    cp adversarial_dataset/dev-adv-swapped.csv data/arct/dev-adv-swapped.csv
-fi
 if [ ! -f data/arct/dev-adv-negated.csv ]; then
     cp adversarial_dataset/dev-adv-negated.csv data/arct/dev-adv-negated.csv
-fi
-if [ ! -f data/arct/test-adv-swapped.csv ]; then
-    cp adversarial_dataset/test-adv-swapped.csv data/arct/test-adv-swapped.csv
 fi
 if [ ! -f data/arct/test-adv-negated.csv ]; then
     cp adversarial_dataset/test-adv-negated.csv data/arct/test-adv-negated.csv

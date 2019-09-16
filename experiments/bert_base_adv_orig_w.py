@@ -16,6 +16,6 @@ def run():
     experiments.run(
         args=args,
         model_constructor=bert.BERT.from_args,
-        data_loaders_constructor=bert.DataLoadersAdvNegatedW,
+        data_loaders_constructor=bert.DataLoadersAdvOriginalW,
         grid_space=grid_space,
         n_experiments=20)

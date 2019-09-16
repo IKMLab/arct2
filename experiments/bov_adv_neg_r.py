@@ -7,18 +7,17 @@ def run():
     args = training.Args(
         experiment_name=__name__.split('.')[-1],
         use_bert=False,
-        n_train_epochs=3,
+        n_train_epochs=20,
         dropout_prob=0.,
         train_batch_size=32,
         tune_embeds=True)
     grid_space = {
-        'learning_rate': [0.1, 0.09, 0.08],
-        'n_train_epochs': [3, 5],
-        'dropout_prob': [0., 0.1],
-        'train_batch_size': [16, 32, 64]}
+        'learning_rate': [.03, .01, .009, .006, .003],
+        'dropout_prob': [.1, .2, .3],
+        'train_batch_size': [16, 32]}
     experiments.run(
         args=args,
-        model_constructor=bov.BOV_CW,
-        data_loaders_constructor=bov.DataLoadersAdvSwapped,
+        model_constructor=bov.BOV_R,
+        data_loaders_constructor=bov.DataLoadersAdvNegated,
         grid_space=grid_space,
         n_experiments=20)

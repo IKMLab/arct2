@@ -1,4 +1,3 @@
-"""Experiment for running ARCT through BERT base."""
 from arct import bert
 from util import training, experiments
 
@@ -16,6 +15,6 @@ def run():
     experiments.run(
         args=args,
         model_constructor=bert.BERT.from_args,
-        data_loaders_constructor=bert.DataLoadersAdvNegated,
+        data_loaders_constructor=bert.DataLoadersAdvOriginal,
         grid_space=grid_space,
         n_experiments=20)

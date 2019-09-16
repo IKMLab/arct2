@@ -174,7 +174,7 @@ class DataLoadersSwappedTrain(DataLoaders):
 class DataLoadersAdvOriginal(DataLoaders):
 
     def train(self, args):
-        data_points = data.load('train-adv-swapped')
+        data_points = data.load('train-swapped')
         self.n_training_points = len(data_points)
         return self.get_data_loader(data_points, args)
 

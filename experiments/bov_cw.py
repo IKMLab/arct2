@@ -7,7 +7,7 @@ def run():
     args = training.Args(
         experiment_name=__name__.split('.')[-1],
         use_bert=False,
-        n_train_epochs=3,
+        num_train_epochs=3,
         hidden_size=300,
         train_batch_size=32,
         tune_embeds=True)
