@@ -149,7 +149,7 @@ original dataset.
 #### Table 4
 
 These experiments are named following the convention 
-`{experiment_name_adv_orig}`.
+`{experiment_name}_adv_orig`.
 
 |Model        |Adversarial Test (Mean)|Adversarial Test (Median)|Adversarial Test (Max)|
 |-------------|-----------------------|-------------------------|----------------------|
