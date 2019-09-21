@@ -11,6 +11,7 @@ preds.pkl
 results/test
 bov2/
 experiments/bov2.py
+experiments/debug.py
 tmp/
 
 # Byte-compiled / optimized / DLL files

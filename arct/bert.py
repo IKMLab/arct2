@@ -187,6 +187,27 @@ class DataLoadersAdvCrossed(DataLoaders):
         return self.get_data_loader(examples, args)
 
 
+class DataLoadersAdvNew(DataLoaders):
+
+    def train(self, args):
+        df = data.load('train-adv-negated')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def dev(self, args):
+        df = data.load('dev-original')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def test(self, args):
+        df = data.load('test-original')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+
 class DataLoadersAdvSwapped(DataLoaders):
 
     def train(self, args):
@@ -359,6 +380,27 @@ class DataLoadersAdvOriginal(DataLoaders):
 
     def train(self, args):
         df = data.load('train-swapped')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def dev(self, args):
+        df = data.load('dev-adv-negated')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+    def test(self, args):
+        df = data.load('test-adv-negated')
+        self.n_training_points = len(df)
+        examples = self.create_examples(df)
+        return self.get_data_loader(examples, args)
+
+
+class DataLoadersDebug(DataLoaders):
+
+    def train(self, args):
+        df = data.load('train-original')
         self.n_training_points = len(df)
         examples = self.create_examples(df)
         return self.get_data_loader(examples, args)
