@@ -13,6 +13,7 @@ bov2/
 experiments/bov2.py
 experiments/debug.py
 tmp/
+Find Heuristics With PMI.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
