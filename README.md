@@ -31,28 +31,17 @@ Reference:
 Due to an errata in the original paper, we have updated the arXiv
 version [here](https://arxiv.org/abs/1907.07355). The errata was that
 our adversarial experiments used the original (not claim-negated) data
-for training. This is important for breaking the validity of spurious 
-cues over the claims and warrants. Details of the problem of cues over 
-claims and warrants will be provided in a forthcoming paper. 
+for training, augmented with swapped warrants. This is important for 
+breaking the validity of spurious cues over the claims and warrants. The
+negated claim augmentation has successfully eliminated warrant cues as
+a solution. Details of the problem of additional cues over claims and 
+warrants will be provided in a forthcoming paper. 
 
 ## Adversarial Dataset
 
-Provided in the `adversarial_dataset` folder. Note there are two 
-versions:
-- `original`: training set is the original data, augmented with warrant
-  swaps; validation and test are augmented with negated claims, as per
-  the paper. So you would use
+Provided in the `adversarial_dataset` folder. The setup we used in the
+experiments is
   * `train-swapped.csv`
-  * `dev-adv-negated.csv`
-  * `test-adv-negated.csv`
-- `negated`: the training, validation, and test sets are all augmented
-  with negated claims. This dataset contains spurious statistical cues
-  holding over claims and warrants that provide a common solution to
-  the training and testing sets, and therefore achieves above random
-  performance. Hence the original dataset provides a more robust
-  evaluation. We analyze this dataset more thoroughly in a forthcoming
-  paper. It dataset is comprised of
-  * `train-adv-negated.csv`
   * `dev-adv-negated.csv`
   * `test-adv-negated.csv`
 
@@ -65,8 +54,10 @@ The suffixes (and combinations thereof) indicate the setup
 - `w` only considers warrants
 - `adv` uses the adversarial dev and test dataset, and swap augmented
   train dataset
+The tables below also show the experiment names for reproducing specific
+results.
 
-Within each experiment's folder you will find
+Within each experiment's folder in `results` you will find
 - `accs.csv`: contains accuracies for train, dev, and test over
   all random seeds
 - `best_params.json`: lists the best parameters from grid search
@@ -104,7 +95,8 @@ commands I issued on my Ubuntu computer to make this repository work:
 - `pip install nltk==3.4`
 - `pip install tqdm==4.28.1`
 - `conda install -c pytorch pytorch=0.4.1`
-- `pip install numpy==1.15.4`
+- `pip install numpy==1.15.4`  (not sure if this is necessary, 
+  but it does work)
 - `pip install pytorch-pretrained-bert==0.1.2`
 
 ### Download and Prepare Data
@@ -135,24 +127,24 @@ original dataset.
 
 #### Table 1
 
-|Model                                  |Dev (Mean)    |Test (Mean)   |Test (Median)|Test (Max)|
-|---------------------------------------|--------------|--------------|-------------|----------|
-|Human (trained)                        |              |0.909 +/- 0.11|             |          |
-|Human (untrained)                      |              |0.798 +/- 0.16|             |          |
-|BERT (Large)                           |0.694 +/- 0.04|0.660 +/- 0.08|0.690        |0.775     |
-|GIST (Choi and Lee, 2018)              |0.716 +/- 0.01|0.711 +/- 0.01|             |          |
-|BERT (Base)                            |0.675 +/- 0.03|0.634 +/- 0.07|0.661        |0.725     |
-|World Knowledge (Botschen et al., 2018)|0.674 +/- 0.01|0.568 +/- 0.03|             |0.610     |
-|Bag of Vectors (BoV)                   |0.633 +/- 0.02|0.564 +/- 0.02|0.562        |0.604     |
-|BiLSTM                                 |0.659 +/- 0.01|0.544 +/- 0.02|0.547        |0.583     |
+|Model                                  |Experiment Name|Dev (Mean)    |Test (Mean)   |Test (Median)|Test (Max)|
+|---------------------------------------|---------------|--------------|--------------|-------------|----------|
+|Human (trained)                        |               |              |0.909 +/- 0.11|             |          |
+|Human (untrained)                      |               |              |0.798 +/- 0.16|             |          |
+|BERT (Large)                           |bert_large     |0.694 +/- 0.04|0.660 +/- 0.08|0.690        |0.775     |
+|GIST (Choi and Lee, 2018)              |               |0.716 +/- 0.01|0.711 +/- 0.01|             |          |
+|BERT (Base)                            |bert_base      |0.675 +/- 0.03|0.634 +/- 0.07|0.661        |0.725     |
+|World Knowledge (Botschen et al., 2018)|               |0.674 +/- 0.01|0.568 +/- 0.03|             |0.610     |
+|Bag of Vectors (BoV)                   |bov            |0.633 +/- 0.02|0.564 +/- 0.02|0.562        |0.604     |
+|BiLSTM                                 |bilstm         |0.659 +/- 0.01|0.544 +/- 0.02|0.547        |0.583     |
 
 #### Table 4
 
 These experiments are named following the convention 
 `{experiment_name}_adv_orig`.
 
-|Model        |Adversarial Test (Mean)|Adversarial Test (Median)|Adversarial Test (Max)|
-|-------------|-----------------------|-------------------------|----------------------|
-|BERT (Large) |0.509 +/- 0.02         |0.509                    |0.539                 |
-|BoV          |0.500 +/- 0.00         |0.500                    |0.503                 |
-|BiLSTM       |0.499 +/- 0.00         |0.500                    |0.501                 |
+|Model        |Experiment Name|Adversarial Test (Mean)|Adversarial Test (Median)|Adversarial Test (Max)|
+|-------------|---------------|-----------------------|-------------------------|----------------------|
+|BERT (Large) |bert_large_adv |0.509 +/- 0.02         |0.509                    |0.539                 |
+|BoV          |bov_adv        |0.500 +/- 0.00         |0.500                    |0.503                 |
+|BiLSTM       |bilstm_adv     |0.499 +/- 0.00         |0.500                    |0.501                 |
