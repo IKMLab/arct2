@@ -140,9 +140,6 @@ original dataset.
 
 #### Table 4
 
-These experiments are named following the convention 
-`{experiment_name}_adv_orig`.
-
 |Model        |Experiment Name|Adversarial Test (Mean)|Adversarial Test (Median)|Adversarial Test (Max)|
 |-------------|---------------|-----------------------|-------------------------|----------------------|
 |BERT (Large) |bert_large_adv |0.509 +/- 0.02         |0.509                    |0.539                 |
